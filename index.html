@@ -1,441 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Pipeline Intel — 15 Jun 2026</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pipeline Intel — 18 Jun 2026</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:14px;color:#1a1a1a;background:#fff;line-height:1.5}
-.wrap{max-width:1280px;margin:0 auto;padding:0 1.5rem 3rem}
-.topbar{background:#1F4E79;color:#fff;padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
-.topbar-title{font-size:16px;font-weight:600}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;color:#1a1a1a;background:#fff}
+.topbar{background:#1F4E79;color:#fff;padding:.85rem 1.25rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem}
+.topbar-title{font-size:15px;font-weight:600}
 .topbar-meta{font-size:11px;opacity:.75}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;padding:1.25rem 0;border-bottom:1px solid #f0f0f0}
-.stat{background:#f7f7f7;border-radius:8px;padding:.6rem .85rem}
-.stat-label{font-size:11px;color:#888;margin-bottom:2px}
-.stat-val{font-size:20px;font-weight:600}
-.stat-val.red{color:#A32D2D}.stat-val.amber{color:#854F0B}.stat-val.teal{color:#0F6E56}
-.tabs{display:flex;border-bottom:1px solid #e8e8e8;margin-bottom:1.25rem}
-.tab{padding:.6rem 1.1rem;font-size:13px;cursor:pointer;border:none;background:none;color:#888;border-bottom:2px solid transparent;margin-bottom:-1px}
-.tab.active{color:#1a1a1a;font-weight:600;border-bottom-color:#1F4E79}
-.tab-pane{display:none}.tab-pane.active{display:block}
-.filters{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
-.filters select{font-size:12px;padding:5px 10px;border:1px solid #e0e0e0;border-radius:6px;background:#fff;cursor:pointer}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;padding:1rem 1.25rem;border-bottom:1px solid #f0f0f0}
+.stat{background:#f7f7f7;border-radius:7px;padding:.5rem .75rem}
+.stat-l{font-size:10px;color:#888;margin-bottom:1px}
+.stat-v{font-size:18px;font-weight:600}
+.stat-v.r{color:#A32D2D}.stat-v.a{color:#854F0B}.stat-v.g{color:#0F6E56}
+.tabs{display:flex;border-bottom:1px solid #e8e8e8;padding:0 1.25rem;overflow-x:auto}
+.tab{padding:.55rem 1rem;font-size:12px;border:none;background:none;cursor:pointer;color:#888;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tab.on{color:#1a1a1a;font-weight:600;border-bottom-color:#1F4E79}
+.pane{display:none;padding:.85rem 1.25rem}.pane.on{display:block}
+.filters{display:flex;gap:6px;margin-bottom:.75rem;flex-wrap:wrap}
+.filters select,.filters button{font-size:11px;padding:4px 9px;border-radius:5px;border:1px solid #ddd;background:#fff;cursor:pointer}
+.filters button.on{background:#f0f0f0;font-weight:500}
+.notice{background:#EAF3DE;border:1px solid #c6dda0;border-radius:7px;padding:.6rem .85rem;font-size:11px;color:#3B6D11;margin-bottom:.85rem}
 table{width:100%;border-collapse:collapse}
-th{text-align:left;padding:7px 8px;font-size:11px;font-weight:600;color:#888;border-bottom:1.5px solid #e8e8e8;white-space:nowrap}
-td{padding:7px 8px;border-bottom:1px solid #f2f2f2;vertical-align:top;font-size:12px}
+th{padding:6px 8px;font-size:10px;font-weight:600;color:#888;border-bottom:1.5px solid #e8e8e8;text-align:left;white-space:nowrap}
+td{padding:6px 8px;border-bottom:1px solid #f2f2f2;vertical-align:top;font-size:11px}
 tr:hover td{background:#fafafa}
-.section-head{background:#f5f5f5;font-weight:600;font-size:11px;color:#666;padding:6px 8px;border-top:1px solid #e8e8e8;border-bottom:1px solid #e8e8e8}
-.cf-total td{background:#f0f0f0;font-weight:600;border-top:1.5px solid #e0e0e0}
-.meta-bar{font-size:11px;color:#888;padding:.75rem 0;border-top:1px solid #f0f0f0;margin-top:2rem;display:flex;align-items:center;gap:.5rem}
-.badge-claude{display:inline-block;padding:2px 8px;border-radius:99px;background:#e8eef7;color:#1F4E79;font-size:10px;font-weight:600}
-.notice{background:#EAF3DE;border:1px solid #c6dda0;border-radius:8px;padding:.75rem 1rem;font-size:12px;color:#3B6D11;margin-bottom:1rem}
-@media print{
-  .tabs{display:none}
-  .tab-pane{display:block!important}
-  .tab-pane + .tab-pane{margin-top:2rem;padding-top:2rem;border-top:2px solid #e8e8e8}
-}
+.badge{display:inline-block;padding:1px 7px;border-radius:99px;font-size:10px;font-weight:600;white-space:nowrap}
+.P1{background:#FCEBEB;color:#A32D2D}.P2{background:#FAEEDA;color:#854F0B}.P3{background:#EAF3DE;color:#3B6D11}.P4{background:#E6F1FB;color:#185FA5}.P5{background:#F1EFE8;color:#5F5E5A}
+.ch{background:#EAF3DE;color:#3B6D11}.cm{background:#FAEEDA;color:#854F0B}.cl{background:#FCEBEB;color:#A32D2D}
+.rc{color:#A32D2D;font-weight:600}.ac{color:#854F0B}
+.nb{background:#E6F1FB;color:#185FA5;font-size:9px;padding:1px 5px;border-radius:99px;margin-left:3px}
+.zb{background:#FCEBEB;color:#A32D2D;font-size:9px;padding:1px 5px;border-radius:99px;margin-left:3px}
+.eb{background:#EAF3DE;color:#3B6D11;font-size:9px;padding:1px 5px;border-radius:99px;margin-left:3px}
+.ecard{border:1px solid #e8e8e8;border-radius:9px;padding:.9rem 1rem;margin-bottom:.65rem}
+.ehdr{display:flex;align-items:center;gap:7px;margin-bottom:.65rem;flex-wrap:wrap}
+.ebox{background:#f9f9f9;border-radius:7px;padding:.65rem;margin-bottom:.4rem}
+.ebl{font-size:9px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.ebv{font-size:12px;line-height:1.6;color:#222}
+.ebsrc{font-size:10px;color:#999;font-style:italic;margin-top:3px}
+.gtag{font-size:10px;padding:1px 7px;border-radius:99px;background:#f2f2f2;color:#555;border:.5px solid #ddd}
+.cfhdr{font-size:10px;font-weight:600;padding:5px 8px;background:#f5f5f5;border-top:1px solid #e8e8e8;border-bottom:1px solid #e8e8e8;color:#666}
+.meta{font-size:10px;color:#aaa;padding:.65rem 0;border-top:1px solid #f0f0f0;margin-top:1.5rem}
+.badge-cl{display:inline-block;padding:1px 7px;border-radius:99px;background:#e8eef7;color:#1F4E79;font-size:10px;font-weight:600}
+@media print{.tabs{display:none}.pane{display:block!important}.pane+.pane{border-top:2px solid #e8e8e8;margin-top:1.5rem;padding-top:1.5rem}}
 </style>
 </head>
 <body>
 <div class="topbar">
-  <span class="topbar-title">Pipeline Intel &nbsp;·&nbsp; 15 Jun 2026</span>
-  <span class="topbar-meta">Enriched via: Notion + HubSpot  ·  5 deals enriched  ·  Fellow skipped (test mode)  ·  Run: 15 Jun 2026 02:35</span>
+  <span class="topbar-title">Pipeline Intel &nbsp;·&nbsp; 18 Jun 2026</span>
+  <span class="topbar-meta">Enriched via Notion + HubSpot &nbsp;·&nbsp; 6 deals enriched &nbsp;·&nbsp; 3 High confidence suggestions &nbsp;·&nbsp; Run: 18 Jun 2026</span>
 </div>
-<div class="wrap">
-  <div class="stats">
-    <div class="stat"><div class="stat-label">Weighted TCV</div><div class="stat-val teal">$1,745,333</div></div>
-    <div class="stat"><div class="stat-label">Open deals</div><div class="stat-val">17</div></div>
-    <div class="stat"><div class="stat-label">P1 urgent</div><div class="stat-val red">8</div></div>
-    <div class="stat"><div class="stat-label">P2 high</div><div class="stat-val amber">3</div></div>
-    <div class="stat"><div class="stat-label">No next step</div><div class="stat-val red">5</div></div>
-    <div class="stat"><div class="stat-label">No line items</div><div class="stat-val amber">1</div></div>
-    <div class="stat"><div class="stat-label">Billing freq gaps</div><div class="stat-val amber">3</div></div>
-    <div class="stat"><div class="stat-label">Enriched deals</div><div class="stat-val teal">5</div></div>
-  </div>
+<div style="padding:.85rem 1.25rem">
+<div class="stats">
+  <div class="stat"><div class="stat-l">Weighted TCV</div><div class="stat-v g">$1.80M</div></div>
+  <div class="stat"><div class="stat-l">Open deals</div><div class="stat-v">23</div></div>
+  <div class="stat"><div class="stat-l">P1 urgent</div><div class="stat-v r">3</div></div>
+  <div class="stat"><div class="stat-l">P2 high</div><div class="stat-v a">7</div></div>
+  <div class="stat"><div class="stat-l">No next step</div><div class="stat-v r">6</div></div>
+  <div class="stat"><div class="stat-l">Billing freq gaps</div><div class="stat-v a">5</div></div>
+  <div class="stat"><div class="stat-l">Zombies</div><div class="stat-v r">3</div></div>
+  <div class="stat"><div class="stat-l">New deals</div><div class="stat-v g">8</div></div>
+</div>
+</div>
+<div class="tabs">
+  <button class="tab on" onclick="ST('pipeline',this)">Pipeline (23)</button>
+  <button class="tab" onclick="ST('enrichment',this)">Enrichment (6)</button>
+  <button class="tab" onclick="ST('cashflow',this)">Cashflow</button>
+</div>
 
-  <div class="notice">Read-only view — open in Claude to approve next-step write-backs to HubSpot.</div>
-
-  <div class="tabs">
-    <button class="tab active" onclick="show('pipeline',this)">Pipeline (17)</button>
-    <button class="tab" onclick="show('enrichment',this)">Enrichment (5)</button>
-    <button class="tab" onclick="show('cashflow',this)">Cashflow</button>
+<div id="pane-pipeline" class="pane on">
+  <div class="notice">Read-only — open in Claude to approve write-backs to HubSpot. 3 High confidence suggestions ready.</div>
+  <div class="filters">
+    <select onchange="FT(this.value)">
+      <option value="all">All priorities</option>
+      <option value="P1">P1 urgent</option>
+      <option value="P2">P2 high</option>
+      <option value="P3">P3 medium</option>
+      <option value="P4">P4 low</option>
+      <option value="P5">P5 unqualified</option>
+    </select>
   </div>
+  <div style="overflow-x:auto">
+  <table id="pt">
+    <thead><tr>
+      <th style="width:90px">Priority</th><th style="width:195px">Deal</th><th style="width:115px">Stage</th>
+      <th style="text-align:right;width:75px">TCV</th><th style="text-align:right;width:45px">Prob</th>
+      <th style="width:90px">Close</th><th style="width:95px">Velocity</th><th>Next Step</th><th style="width:200px">Hygiene</th>
+    </tr></thead>
+    <tbody id="ptb"></tbody>
+  </table></div>
+</div>
 
-  <div id="pane-pipeline" class="tab-pane active">
-    <div class="filters">
-      <select onchange="filterTable(this.value)">
-        <option value="all">All priorities</option>
-        <option value="P1">P1 urgent</option>
-        <option value="P2">P2 high</option>
-        <option value="P3">P3 medium</option>
-        <option value="P4">P4 low</option>
-        <option value="P5">P5 unqualified</option>
-      </select>
-    </div>
-    <div style="overflow-x:auto">
-    <table id="pipeline-table">
-      <thead><tr>
-        <th style="width:100px">Priority</th>
-        <th style="width:200px">Deal</th>
-        <th style="width:130px">Stage</th>
-        <th style="width:85px;text-align:right">TCV</th>
-        <th style="width:45px;text-align:right">Prob</th>
-        <th style="width:100px">Close date</th>
-        <th style="width:100px">Velocity</th>
-        <th>Next step</th>
-        <th style="width:220px">Hygiene</th>
-      </tr></thead>
-      <tbody>
-    <tr>
-      <td><span style="display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;background:#FCEBEB;color:#A32D2D">P1 Urgent</span></td>
-      <td><a href="https://app.hubspot.com/contacts/45881215/record/0-3/39576195256" target="_blank" style="color:#185FA5;text-decoration:none;font-size:12px">ICC-ES Digitisation Solution</a>
-          </td>
-      <td>Contracting/Legal</td>
-      <td style="text-align:right">$337,450</td>
-      <td style="text-align:right">90%</td>
-      <td style="color:#A32D2D;font-weight:600">30 Apr 2026</td>
-      <td><span style="display:inline-block;padding:2px 7px;border-radius:99px;font-size:11px;background:#EAF3DE;color:#3B6D11">PROGRESSING</span></td>
-      <td style=";font-size:12px">Submit milestone 1 doc + prototype by Jul 30</td>
-      <td style="font-size:11px;color:#666">⚠ Close date overdue</td>
-    </tr>
-    <tr>
-      <td><span style="display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;background:#FCEBEB;color:#A32D2D">P1 Urgent</span></td>
-      <td><a href="https://app.hubspot.com/contacts/45881215/record/0-3/39576564408" target="_blank" style="color:#185FA5;text-decoration:none;font-size:12px">ASTM Phase 2</a>
-          </td>
-      <td>Contracting/Legal</td>
-      <td style="text-align:right">$888,818</td>
-      <td style="text-align:right">90%</td>
-      <td style="">31 Dec 2026</td>
-      <td><span style="display:inline-block;padding:2px 7px;border-radius:99px;font-size:11px;background:#EAF3DE;color:#3B6D11">PROGRESSING</span></td>
-      <td style=";font-size:12px">Awaiting Jane response to MathML/AI dual-ROI reply</td>
-      <td style="font-size:11px;color:#666">⚠ Billing freq missing (Implementation $785K)</td>
-    </tr>
-    <tr>
-      <td><span style="display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;background:#FCEBEB;color:#A32D2D">P1 Urgent</span></td>
-      <td><a href="https://app.hubspot.com/contacts/45881215/record/0-3/54403263535" target="_blank" style="color:#185FA5;text-decoration:none;font-size:12px">Nucor Enterprise API & Licensing</a>
-          <span style="margin-left:4px;font-size:10px;padding:1px 5px;border-radius:99px;background:#EAF3DE;color:#3B6D11">✦</span></td>
-      <td>Contracting/Legal</td>
-      <td style="text-align:right">$200,000</td>
-      <td style="text-align:right">90%</td>
-      <td style="color:#A32D2D;font-weight:600">1 Jun 2026</td>
-      <td><span style="display:inline-block;padding:2px 7px;border-radius:99px;font-size:11px;background:#EAF3DE;color:#3B6D11">PROGRESSING</span></td>
-      <td style="color:#A32D2D;font-weight:600;font-size:12px">⚠ No next step</td>
-      <td style="font-size:11px;color:#666">⚠ No next step · MEDDPICC gaps</td>
-    </tr>
-    <tr>
-      <td><span style="display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;background:#FCEBEB;color:#A32D2D">P1 Urgent</span></td>
-      <td><a href="https://app.hubspot.com/contacts/45881215/record/0-3/58798191426" target="_blank" style="color:#185FA5;text-decoration:none;font-size:12px">Nucor NBCC Adaptations</a>
-          </td>
-      <td>Contracting/Legal</td>
-      <td style="text-align:right">$63,080</td>
-      <td style="text-align:right">75%</td>
-      <td style="color:#A32D2D;font-weight:600">30 Apr 2026</td>
-      <td><span style="display:inline-block;padding:2px 7px;border-radius:99px;font-size:11px;background:#EAF3DE;color:#3B6D11">PROGRESSING</span></td>
-      <td style=";font-size:12px">Order forms to Brian — MSA approved, awaiting execution</td>
-      <td style="font-size:11px;color:#666">⚠ Close date overdue · Billing freq missing</td>
-    </tr>
-    <tr>
-      <td><span style="display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;background:#FCEBEB;color:#A32D2D">P1 Urgent</span></td>
-      <td><a href="https://app.hubspot.com/contacts/45881215/record/0-3/29998748564" target="_blank" style="color:#185FA5;text-decoration:none;font-size:12px">New Millennium Joists (Vibration)</a>
-          </td>
-      <td>Negotiation</td>
-      <td style="text-align:right">$249,724</td>
-      <td style="text-align:right">70%</td>
-      <td style="">30 Jun 2026</td>
-      <td><span style="display:inline-block;padding:2px 7px;border-radius:99px;font-size:11px;background:#EAF3DE;color:#3B6D11">PROGRESSING</span></td>
-      <td style=";font-size:12px">Send vibration calc proposal by Aug 7</td>
-      <td style="font-size:11px;color:#666">⚠ Billing freq missing (Implementation $185K)</td>
-    </tr>
-    <tr>
-      <td><span style="display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;background:#FCEBEB;color:#A32D2D">P1 Urgent</span></td>
-      <td><a href="https://app.hubspot.com/contacts/45881215/record/0-3/55035110435" target="_blank" style="color:#185FA5;text-decoration:none;font-size:12px">Fortress BP — LSF Decks</a>
-          </td>
-      <td>Need Analysis</td>
-      <td style="text-align:right">$74,500</td>
-      <td style="text-align:right">30%</td>
-      <td style="">1 Dec 2026</td>
-      <td><span style="display:inline-block;padding:2px 7px;border-radius:99px;font-size:11px;background:#FCEBEB;color:#A32D2D">ZOMBIE</span></td>
-      <td style=";font-size:12px">Define SOW — 2026 budget blocker, reopen Q3</td>
-      <td style="font-size:11px;color:#666">⚠ ZOMBIE (61d dark)</td>
-    </tr>
-    <tr>
-      <td><span style="display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;background:#FCEBEB;color:#A32D2D">P1 Urgent</span></td>
-      <td><a href="https://app.hubspot.com/contacts/45881215/record/0-3/59186306851" target="_blank" style="color:#185FA5;text-decoration:none;font-size:12px">Acoustitech</a>
-          </td>
-      <td>Prospecting</td>
-      <td style="text-align:right">$54,750</td>
-      <td style="text-align:right">10%</td>
-      <td style="color:#A32D2D;font-weight:600">15 May 2026</td>
-      <td><span style="display:inline-block;padding:2px 7px;border-radius:99px;font-size:11px;background:#EAF3DE;color:#3B6D11">PROGRESSING</span></td>
-      <td style=";font-size:12px">Schedule discovery call</td>
-      <td style="font-size:11px;color:#666">⚠ Close date overdue</td>
-    </tr>
-    <tr>
-      <td><span style="display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;background:#FCEBEB;color:#A32D2D">P1 Urgent</span></td>
-      <td><a href="https://app.hubspot.com/contacts/45881215/record/0-3/59171618846" target="_blank" style="color:#185FA5;text-decoration:none;font-size:12px">MTC — APEX Connector</a>
-          </td>
-      <td>Prospecting</td>
-      <td style="text-align:right">$53,750</td>
-      <td style="text-align:right">10%</td>
-      <td style="color:#A32D2D;font-weight:600">14 May 2026</td>
-      <td><span style="display:inline-block;padding:2px 7px;border-radius:99px;font-size:11px;background:#FAEEDA;color:#854F0B">AGING</span></td>
-      <td style=";font-size:12px">Multi-thread contacts; trying to book discovery</td>
-      <td style="font-size:11px;color:#666">⚠ Close date overdue · Aged (24d dark)</td>
-    </tr>
-    <tr>
-      <td><span style="display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;background:#FAEEDA;color:#854F0B">P2 High</span></td>
-      <td><a href="https://app.hubspot.com/contacts/45881215/record/0-3/48536191024" target="_blank" style="color:#185FA5;text-decoration:none;font-size:12px">Spacial.io</a>
-          </td>
-      <td>Need Analysis</td>
-      <td style="text-align:right">$300,000</td>
-      <td style="text-align:right">30%</td>
-      <td style="">30 Jun 2026</td>
-      <td><span style="display:inline-block;padding:2px 7px;border-radius:99px;font-size:11px;background:#EAF3DE;color:#3B6D11">PROGRESSING</span></td>
-      <td style=";font-size:12px">Spacial testing API integrations — proposal expected Q2</td>
-      <td style="font-size:11px;color:#666">⚠ MEDDPICC gaps</td>
-    </tr>
-    <tr>
-      <td><span style="display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;background:#FAEEDA;color:#854F0B">P2 High</span></td>
-      <td><a href="https://app.hubspot.com/contacts/45881215/record/0-3/53696617123" target="_blank" style="color:#185FA5;text-decoration:none;font-size:12px">Scaffplan Partnership</a>
-          </td>
-      <td>Need Analysis</td>
-      <td style="text-align:right">$120,000</td>
-      <td style="text-align:right">30%</td>
-      <td style="">30 Jun 2026</td>
-      <td><span style="display:inline-block;padding:2px 7px;border-radius:99px;font-size:11px;background:#EAF3DE;color:#3B6D11">PROGRESSING</span></td>
-      <td style=";font-size:12px">Ben Beaumont meeting with Laurent — SOW to define proposal</td>
-      <td style="font-size:11px;color:#666">⚠ MEDDPICC gaps</td>
-    </tr>
-    <tr>
-      <td><span style="display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;background:#FAEEDA;color:#854F0B">P2 High</span></td>
-      <td><a href="https://app.hubspot.com/contacts/45881215/record/0-3/46825463186" target="_blank" style="color:#185FA5;text-decoration:none;font-size:12px">SCIA + SDS2 / Allplan Integration</a>
-          <span style="margin-left:4px;font-size:10px;padding:1px 5px;border-radius:99px;background:#EAF3DE;color:#3B6D11">✦</span></td>
-      <td>Need Analysis</td>
-      <td style="text-align:right">$50,000</td>
-      <td style="text-align:right">50%</td>
-      <td style="">—</td>
-      <td><span style="display:inline-block;padding:2px 7px;border-radius:99px;font-size:11px;background:#EAF3DE;color:#3B6D11">PROGRESSING</span></td>
-      <td style="color:#A32D2D;font-weight:600;font-size:12px">⚠ No next step</td>
-      <td style="font-size:11px;color:#666">⚠ No next step · No close date · MEDDPICC gaps</td>
-    </tr>
-    <tr>
-      <td><span style="display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;background:#EAF3DE;color:#3B6D11">P3 Medium</span></td>
-      <td><a href="https://app.hubspot.com/contacts/45881215/record/0-3/46794522170" target="_blank" style="color:#185FA5;text-decoration:none;font-size:12px">AISC Codes Integration</a>
-          </td>
-      <td>Proposal</td>
-      <td style="text-align:right">$50,000</td>
-      <td style="text-align:right">50%</td>
-      <td style="">31 Dec 2026</td>
-      <td><span style="display:inline-block;padding:2px 7px;border-radius:99px;font-size:11px;background:#EAF3DE;color:#3B6D11">PROGRESSING</span></td>
-      <td style=";font-size:12px">Laurent follow up with Melissa on bolt tool feedback</td>
-      <td style="font-size:11px;color:#666">⚠ MEDDPICC gaps</td>
-    </tr>
-    <tr>
-      <td><span style="display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;background:#EAF3DE;color:#3B6D11">P3 Medium</span></td>
-      <td><a href="https://app.hubspot.com/contacts/45881215/record/0-3/42448886830" target="_blank" style="color:#185FA5;text-decoration:none;font-size:12px">ICC Expansion</a>
-          </td>
-      <td>Need Analysis</td>
-      <td style="text-align:right">$50,000</td>
-      <td style="text-align:right">30%</td>
-      <td style="">30 Jun 2026</td>
-      <td><span style="display:inline-block;padding:2px 7px;border-radius:99px;font-size:11px;background:#EAF3DE;color:#3B6D11">PROGRESSING</span></td>
-      <td style=";font-size:12px">Sales studying SOW — proposal V1 due Mar 30 (stale)</td>
-      <td style="font-size:11px;color:#666">⚠ Stale next step</td>
-    </tr>
-    <tr>
-      <td><span style="display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;background:#EAF3DE;color:#3B6D11">P3 Medium</span></td>
-      <td><a href="https://app.hubspot.com/contacts/45881215/record/0-3/55126348615" target="_blank" style="color:#185FA5;text-decoration:none;font-size:12px">Basalt INTL</a>
-          </td>
-      <td>Need Analysis</td>
-      <td style="text-align:right">$51,250</td>
-      <td style="text-align:right">30%</td>
-      <td style="">27 Jun 2026</td>
-      <td><span style="display:inline-block;padding:2px 7px;border-radius:99px;font-size:11px;background:#EAF3DE;color:#3B6D11">PROGRESSING</span></td>
-      <td style=";font-size:12px">Internal review — awaiting spreadsheet from Tim</td>
-      <td style="font-size:11px;color:#666">⚠ No line items (NA+)</td>
-    </tr>
-    <tr>
-      <td><span style="display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;background:#E6F1FB;color:#185FA5">P4 Low</span></td>
-      <td><a href="https://app.hubspot.com/contacts/45881215/record/0-3/46794522543" target="_blank" style="color:#185FA5;text-decoration:none;font-size:12px">Rothoblaas Custom Calc</a>
-          <span style="margin-left:4px;font-size:10px;padding:1px 5px;border-radius:99px;background:#EAF3DE;color:#3B6D11">✦</span></td>
-      <td>Discovery</td>
-      <td style="text-align:right">$0</td>
-      <td style="text-align:right">20%</td>
-      <td style="">30 Jun 2026</td>
-      <td><span style="display:inline-block;padding:2px 7px;border-radius:99px;font-size:11px;background:#FCEBEB;color:#A32D2D">ZOMBIE</span></td>
-      <td style="color:#A32D2D;font-weight:600;font-size:12px">⚠ No next step</td>
-      <td style="font-size:11px;color:#666">⚠ ZOMBIE (52d dark) · No next step · $0 TCV</td>
-    </tr>
-    <tr>
-      <td><span style="display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;background:#F1EFE8;color:#5F5E5A">P5 Unqualified</span></td>
-      <td><a href="https://app.hubspot.com/contacts/45881215/record/0-3/59953151123" target="_blank" style="color:#185FA5;text-decoration:none;font-size:12px">GRM Custom Products</a>
-          <span style="margin-left:4px;font-size:10px;padding:1px 5px;border-radius:99px;background:#EAF3DE;color:#3B6D11">✦</span></td>
-      <td>Discovery</td>
-      <td style="text-align:right">$0</td>
-      <td style="text-align:right">20%</td>
-      <td style="">—</td>
-      <td><span style="display:inline-block;padding:2px 7px;border-radius:99px;font-size:11px;background:#EAF3DE;color:#3B6D11">PROGRESSING</span></td>
-      <td style="color:#A32D2D;font-weight:600;font-size:12px">⚠ No next step</td>
-      <td style="font-size:11px;color:#666">⚠ No next step · New deal</td>
-    </tr>
-    <tr>
-      <td><span style="display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;background:#F1EFE8;color:#5F5E5A">P5 Unqualified</span></td>
-      <td><a href="https://app.hubspot.com/contacts/45881215/record/0-3/59967957528" target="_blank" style="color:#185FA5;text-decoration:none;font-size:12px">Nucor Structural AI — Phase 2</a>
-          <span style="margin-left:4px;font-size:10px;padding:1px 5px;border-radius:99px;background:#EAF3DE;color:#3B6D11">✦</span></td>
-      <td>Discovery</td>
-      <td style="text-align:right">$0</td>
-      <td style="text-align:right">20%</td>
-      <td style="">31 Dec 2026</td>
-      <td><span style="display:inline-block;padding:2px 7px;border-radius:99px;font-size:11px;background:#EAF3DE;color:#3B6D11">PROGRESSING</span></td>
-      <td style="color:#A32D2D;font-weight:600;font-size:12px">⚠ No next step</td>
-      <td style="font-size:11px;color:#666">⚠ No next step · New deal</td>
-    </tr></tbody>
-    </table>
-    </div>
-  </div>
+<div id="pane-enrichment" class="pane">
+  <div id="ec"></div>
+</div>
 
-  <div id="pane-enrichment" class="tab-pane">
-    
-    <div style="border:1px solid #e8e8e8;border-radius:10px;padding:1rem 1.25rem;margin-bottom:0.75rem">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:0.75rem;flex-wrap:wrap">
-        <span style="display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;background:#FCEBEB;color:#A32D2D">P1 Urgent</span>
-        <span style="font-weight:600;font-size:13px">Nucor Enterprise API & Licensing</span>
-        <span style="display:inline-block;font-size:11px;padding:2px 8px;border-radius:99px;background:#f2f2f2;color:#555;border:0.5px solid #ddd">No next step</span>
-      </div>
-      <div style="background:#f9f9f9;border-radius:8px;padding:0.75rem;margin-bottom:0.5rem">
-        <div style="font-size:10px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Suggested next step &nbsp;<span style="display:inline-block;padding:2px 7px;border-radius:99px;font-size:11px;font-weight:600;background:#FAEEDA;color:#854F0B">Medium</span></div>
-        <div style="font-size:13px;line-height:1.6;color:#222">Confirm enterprise posture (SLA, residency, audit) + T&C items with Brian — by Jun 22.</div>
-        <div style="font-size:11px;color:#888;margin-top:5px;font-style:italic">Notion Commercial Planning (updated Jun 7): T&C working doc open in Drive.</div>
-      </div>
-      <div style="font-size:11px;color:#999">To approve this write-back, open the audit in Claude and use the Write-back Queue tab.</div>
-    </div>
-    <div style="border:1px solid #e8e8e8;border-radius:10px;padding:1rem 1.25rem;margin-bottom:0.75rem">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:0.75rem;flex-wrap:wrap">
-        <span style="display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;background:#FAEEDA;color:#854F0B">P2 High</span>
-        <span style="font-weight:600;font-size:13px">SCIA + SDS2 / Allplan Integration</span>
-        <span style="display:inline-block;font-size:11px;padding:2px 8px;border-radius:99px;background:#f2f2f2;color:#555;border:0.5px solid #ddd">No next step</span>
-      </div>
-      <div style="background:#f9f9f9;border-radius:8px;padding:0.75rem;margin-bottom:0.5rem">
-        <div style="font-size:10px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Suggested next step &nbsp;<span style="display:inline-block;padding:2px 7px;border-radius:99px;font-size:11px;font-weight:600;background:#EAF3DE;color:#3B6D11">High</span></div>
-        <div style="font-size:13px;line-height:1.6;color:#222">Follow up on Apr 30 deal review: confirm pilot scope (stairs calc), set close date, move to Proposal. Contact Michelle McCarthy re commercial framework — by Jun 22. Note: $50K placeholder, real ACV likely $1M+.</div>
-        <div style="font-size:11px;color:#888;margin-top:5px;font-style:italic">Notion SCIA deal page (updated May 7): close date + stage move to Proposal are open items from Apr 30 deal review with Mark.</div>
-      </div>
-      <div style="font-size:11px;color:#999">To approve this write-back, open the audit in Claude and use the Write-back Queue tab.</div>
-    </div>
-    <div style="border:1px solid #e8e8e8;border-radius:10px;padding:1rem 1.25rem;margin-bottom:0.75rem">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:0.75rem;flex-wrap:wrap">
-        <span style="display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;background:#E6F1FB;color:#185FA5">P4 Low</span>
-        <span style="font-weight:600;font-size:13px">Rothoblaas Custom Calc</span>
-        <span style="display:inline-block;font-size:11px;padding:2px 8px;border-radius:99px;background:#f2f2f2;color:#555;border:0.5px solid #ddd">No next step</span>
-      </div>
-      <div style="background:#f9f9f9;border-radius:8px;padding:0.75rem;margin-bottom:0.5rem">
-        <div style="font-size:10px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Suggested next step &nbsp;<span style="display:inline-block;padding:2px 7px;border-radius:99px;font-size:11px;font-weight:600;background:#FCEBEB;color:#A32D2D">Low</span></div>
-        <div style="font-size:13px;line-height:1.6;color:#222">Re-engage Chad Mosesso — last activity Mar 20. Qualify budget + timeline or close lost. By Jun 29.</div>
-        <div style="font-size:11px;color:#888;margin-top:5px;font-style:italic">HubSpot deal data — last updated 2026-03-20. Stage logic.</div>
-      </div>
-      <div style="font-size:11px;color:#999">To approve this write-back, open the audit in Claude and use the Write-back Queue tab.</div>
-    </div>
-    <div style="border:1px solid #e8e8e8;border-radius:10px;padding:1rem 1.25rem;margin-bottom:0.75rem">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:0.75rem;flex-wrap:wrap">
-        <span style="display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;background:#F1EFE8;color:#5F5E5A">P5 Unqualified</span>
-        <span style="font-weight:600;font-size:13px">GRM Custom Products</span>
-        <span style="display:inline-block;font-size:11px;padding:2px 8px;border-radius:99px;background:#f2f2f2;color:#555;border:0.5px solid #ddd">No next step</span>
-      </div>
-      <div style="background:#f9f9f9;border-radius:8px;padding:0.75rem;margin-bottom:0.5rem">
-        <div style="font-size:10px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Suggested next step &nbsp;<span style="display:inline-block;padding:2px 7px;border-radius:99px;font-size:11px;font-weight:600;background:#FCEBEB;color:#A32D2D">Low</span></div>
-        <div style="font-size:13px;line-height:1.6;color:#222">Book discovery call — deal is 25 days old.</div>
-        <div style="font-size:11px;color:#888;margin-top:5px;font-style:italic">Deal age: 25 days (created May 1). No Notion page found.</div>
-      </div>
-      <div style="font-size:11px;color:#999">To approve this write-back, open the audit in Claude and use the Write-back Queue tab.</div>
-    </div>
-    <div style="border:1px solid #e8e8e8;border-radius:10px;padding:1rem 1.25rem;margin-bottom:0.75rem">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:0.75rem;flex-wrap:wrap">
-        <span style="display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;background:#F1EFE8;color:#5F5E5A">P5 Unqualified</span>
-        <span style="font-weight:600;font-size:13px">Nucor Structural AI — Phase 2</span>
-        <span style="display:inline-block;font-size:11px;padding:2px 8px;border-radius:99px;background:#f2f2f2;color:#555;border:0.5px solid #ddd">No next step</span>
-      </div>
-      <div style="background:#f9f9f9;border-radius:8px;padding:0.75rem;margin-bottom:0.5rem">
-        <div style="font-size:10px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Suggested next step &nbsp;<span style="display:inline-block;padding:2px 7px;border-radius:99px;font-size:11px;font-weight:600;background:#FCEBEB;color:#A32D2D">Low</span></div>
-        <div style="font-size:13px;line-height:1.6;color:#222">Book scoping call — link to existing Nucor relationship (Brian Hills).</div>
-        <div style="font-size:11px;color:#888;margin-top:5px;font-style:italic">Deal age: 25 days. Linked to Nucor (Buildings Group).</div>
-      </div>
-      <div style="font-size:11px;color:#999">To approve this write-back, open the audit in Claude and use the Write-back Queue tab.</div>
-    </div>
-  </div>
+<div id="pane-cashflow" class="pane">
+  <p style="font-size:11px;color:#888;margin-bottom:.75rem">12-month projection Jun 2026–May 2027 · Confirmed billing frequency only · Monthly deals now correctly spread</p>
+  <div style="overflow-x:auto"><table id="cft" style="font-size:10px">
+<thead>
+<tr><th style="width:180px">Deal</th><th style="text-align:right;width:45px">Prob</th><th style="text-align:right;width:75px">TCV</th>
+<th style="text-align:right;white-space:nowrap">Jun '26</th><th style="text-align:right;white-space:nowrap">Jul '26</th><th style="text-align:right;white-space:nowrap">Aug '26</th><th style="text-align:right;white-space:nowrap">Sep '26</th><th style="text-align:right;white-space:nowrap">Oct '26</th><th style="text-align:right;white-space:nowrap">Nov '26</th><th style="text-align:right;white-space:nowrap">Dec '26</th><th style="text-align:right;white-space:nowrap">Jan '27</th><th style="text-align:right;white-space:nowrap">Feb '27</th><th style="text-align:right;white-space:nowrap">Mar '27</th><th style="text-align:right;white-space:nowrap">Apr '27</th><th style="text-align:right;white-space:nowrap">May '27</th><th style="text-align:right">12-Mo Total</th>
+</tr></thead>
+<tbody>
+<tr><td>Nucor Enterprise API (annually)</td><td style="text-align:right">90%</td><td style="text-align:right">$200,000</td><td style="text-align:right">$200,000</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td style="text-align:right;font-weight:600">$200,000</td></tr>
+<tr style="background:#f9f9f9"><td style="color:#888">↳ weighted</td><td></td><td></td><td style="text-align:right;color:#888">$180,000</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td style="text-align:right;color:#888">$180,000</td></tr>
+<tr><td>Spacial Go Live (monthly $20,833)</td><td style="text-align:right">50%</td><td style="text-align:right">$250,000</td><td style="text-align:right">$20,833</td><td style="text-align:right">$20,833</td><td style="text-align:right">$20,833</td><td style="text-align:right">$20,833</td><td style="text-align:right">$20,833</td><td style="text-align:right">$20,833</td><td style="text-align:right">$20,833</td><td style="text-align:right">$20,833</td><td style="text-align:right">$20,833</td><td style="text-align:right">$20,833</td><td style="text-align:right">$20,833</td><td style="text-align:right">$20,833</td><td style="text-align:right;font-weight:600">$249,996</td></tr>
+<tr style="background:#f9f9f9"><td style="color:#888">↳ weighted</td><td></td><td></td><td style="text-align:right;color:#888">$10,417</td><td style="text-align:right;color:#888">$10,417</td><td style="text-align:right;color:#888">$10,417</td><td style="text-align:right;color:#888">$10,417</td><td style="text-align:right;color:#888">$10,417</td><td style="text-align:right;color:#888">$10,417</td><td style="text-align:right;color:#888">$10,417</td><td style="text-align:right;color:#888">$10,417</td><td style="text-align:right;color:#888">$10,417</td><td style="text-align:right;color:#888">$10,417</td><td style="text-align:right;color:#888">$10,417</td><td style="text-align:right;color:#888">$10,417</td><td style="text-align:right;color:#888">$124,998</td></tr>
+<tr><td>Scaffplan (monthly $10,000)</td><td style="text-align:right">50%</td><td style="text-align:right">$120,000</td><td style="text-align:right">$10,000</td><td style="text-align:right">$10,000</td><td style="text-align:right">$10,000</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td style="text-align:right;font-weight:600">$30,000</td></tr>
+<tr style="background:#f9f9f9"><td style="color:#888">↳ weighted</td><td></td><td></td><td style="text-align:right;color:#888">$5,000</td><td style="text-align:right;color:#888">$5,000</td><td style="text-align:right;color:#888">$5,000</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td style="text-align:right;color:#888">$15,000</td></tr>
+<tr><td>AISC Codes Integration (monthly $8,000)</td><td style="text-align:right">50%</td><td style="text-align:right">$96,000</td><td style="text-align:right">$8,000</td><td style="text-align:right">$8,000</td><td style="text-align:right">$8,000</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td style="text-align:right;font-weight:600">$24,000</td></tr>
+<tr style="background:#f9f9f9"><td style="color:#888">↳ weighted</td><td></td><td></td><td style="text-align:right;color:#888">$4,000</td><td style="text-align:right;color:#888">$4,000</td><td style="text-align:right;color:#888">$4,000</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td style="text-align:right;color:#888">$12,000</td></tr>
+<tr><td>ICC Expansion (annually)</td><td style="text-align:right">50%</td><td style="text-align:right">$50,000</td><td style="text-align:right">$50,000</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td style="text-align:right;font-weight:600">$50,000</td></tr>
+<tr style="background:#f9f9f9"><td style="color:#888">↳ weighted</td><td></td><td></td><td style="text-align:right;color:#888">$25,000</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td style="text-align:right;color:#888">$25,000</td></tr>
+<tr><td>Basalt INTL (annually)</td><td style="text-align:right">30%</td><td style="text-align:right">$50,000</td><td></td><td></td><td></td><td style="text-align:right">$50,000</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td style="text-align:right;font-weight:600">$50,000</td></tr>
+<tr style="background:#f9f9f9"><td style="color:#888">↳ weighted</td><td></td><td></td><td></td><td></td><td></td><td style="text-align:right;color:#888">$15,000</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td style="text-align:right;color:#888">$15,000</td></tr>
+<tr style="background:#f0f0f0;font-weight:600"><td colspan="3">Total — gross</td><td style="text-align:right">$288,833</td><td style="text-align:right">$38,833</td><td style="text-align:right">$38,833</td><td style="text-align:right">$70,833</td><td style="text-align:right">$20,833</td><td style="text-align:right">$20,833</td><td style="text-align:right">$20,833</td><td style="text-align:right">$20,833</td><td style="text-align:right">$20,833</td><td style="text-align:right">$20,833</td><td style="text-align:right">$20,833</td><td style="text-align:right">$20,833</td><td style="text-align:right;font-weight:600">$603,996</td></tr>
+<tr style="background:#f0f0f0;font-weight:600"><td colspan="3">Total — probability-weighted</td><td style="text-align:right">$224,417</td><td style="text-align:right">$19,417</td><td style="text-align:right">$19,417</td><td style="text-align:right">$25,417</td><td style="text-align:right">$10,417</td><td style="text-align:right">$10,417</td><td style="text-align:right">$10,417</td><td style="text-align:right">$10,417</td><td style="text-align:right">$10,417</td><td style="text-align:right">$10,417</td><td style="text-align:right">$10,417</td><td style="text-align:right">$10,417</td><td style="text-align:right;font-weight:600">$371,998</td></tr>
+<tr><td colspan="16" class="cfhdr" style="background:#FAEEDA;color:#854F0B">⚠ Billing freq missing — excluded from forecast (5 items across deals): ASTM Implementation $785K · Spacial.io Pilot $25K · Nucor Cold Formed Truss Impl $50K · SCIA Pilot $50K · Fortress Impl $19K</td></tr>
+<tr><td colspan="16" class="cfhdr">ICC-ES $337K · ASTM ARR $104K — excluded (close date / order form pending, not yet confirmed as recognised revenue)</td></tr>
+</tbody></table></div>
+</div>
 
-  <div id="pane-cashflow" class="tab-pane">
-    <p style="font-size:12px;color:#888;margin-bottom:1rem">12-month projection from Jun 2026 · Annually-billed deals · Gross + probability-weighted · Deals without billing frequency or line items shown separately.</p>
-    <div style="overflow-x:auto">
-    <table>
-      <thead>
-        <tr>
-          <th style="width:180px">Deal</th>
-          <th style="width:45px;text-align:right">Prob</th>
-          <th style="width:80px;text-align:right">TCV</th>
-          <th style="text-align:right;padding:6px 8px;font-size:10px;font-weight:600;color:#888;white-space:nowrap">Jun '26</th><th style="text-align:right;padding:6px 8px;font-size:10px;font-weight:600;color:#888;white-space:nowrap">Jul '26</th><th style="text-align:right;padding:6px 8px;font-size:10px;font-weight:600;color:#888;white-space:nowrap">Aug '26</th><th style="text-align:right;padding:6px 8px;font-size:10px;font-weight:600;color:#888;white-space:nowrap">Sep '26</th><th style="text-align:right;padding:6px 8px;font-size:10px;font-weight:600;color:#888;white-space:nowrap">Oct '26</th><th style="text-align:right;padding:6px 8px;font-size:10px;font-weight:600;color:#888;white-space:nowrap">Nov '26</th><th style="text-align:right;padding:6px 8px;font-size:10px;font-weight:600;color:#888;white-space:nowrap">Dec '26</th><th style="text-align:right;padding:6px 8px;font-size:10px;font-weight:600;color:#888;white-space:nowrap">Jan '27</th><th style="text-align:right;padding:6px 8px;font-size:10px;font-weight:600;color:#888;white-space:nowrap">Feb '27</th><th style="text-align:right;padding:6px 8px;font-size:10px;font-weight:600;color:#888;white-space:nowrap">Mar '27</th><th style="text-align:right;padding:6px 8px;font-size:10px;font-weight:600;color:#888;white-space:nowrap">Apr '27</th><th style="text-align:right;padding:6px 8px;font-size:10px;font-weight:600;color:#888;white-space:nowrap">May '27</th>
-          <th style="text-align:right;padding:6px 8px;font-size:10px;font-weight:600;color:#888">Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        
-    <tr><td style="padding:5px 8px;font-size:12px;border-bottom:1px solid #f0f0f0">ICC-ES Digitisation Solution</td><td style="padding:5px 8px;font-size:11px;text-align:right;border-bottom:1px solid #f0f0f0">90%</td><td style="padding:5px 8px;font-size:11px;text-align:right;border-bottom:1px solid #f0f0f0">$337,450</td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="padding:5px 8px;font-size:11px;font-weight:600;text-align:right;border-bottom:1px solid #f0f0f0">$0</td></tr>
-    <tr style="background:#f9f9f9"><td style="padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0">↳ weighted</td><td style="padding:5px 8px;border-bottom:1px solid #f0f0f0"></td><td style="padding:5px 8px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="padding:5px 8px;font-size:11px;color:#888;text-align:right;border-bottom:1px solid #f0f0f0">$0</td></tr>
-    <tr><td style="padding:5px 8px;font-size:12px;border-bottom:1px solid #f0f0f0">Nucor Enterprise API & Licensing</td><td style="padding:5px 8px;font-size:11px;text-align:right;border-bottom:1px solid #f0f0f0">90%</td><td style="padding:5px 8px;font-size:11px;text-align:right;border-bottom:1px solid #f0f0f0">$200,000</td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0">$200,000</td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="padding:5px 8px;font-size:11px;font-weight:600;text-align:right;border-bottom:1px solid #f0f0f0">$200,000</td></tr>
-    <tr style="background:#f9f9f9"><td style="padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0">↳ weighted</td><td style="padding:5px 8px;border-bottom:1px solid #f0f0f0"></td><td style="padding:5px 8px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0">$180,000</td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="padding:5px 8px;font-size:11px;color:#888;text-align:right;border-bottom:1px solid #f0f0f0">$180,000</td></tr>
-    <tr><td style="padding:5px 8px;font-size:12px;border-bottom:1px solid #f0f0f0">Fortress BP — LSF Decks</td><td style="padding:5px 8px;font-size:11px;text-align:right;border-bottom:1px solid #f0f0f0">30%</td><td style="padding:5px 8px;font-size:11px;text-align:right;border-bottom:1px solid #f0f0f0">$74,500</td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0">$74,500</td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="padding:5px 8px;font-size:11px;font-weight:600;text-align:right;border-bottom:1px solid #f0f0f0">$74,500</td></tr>
-    <tr style="background:#f9f9f9"><td style="padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0">↳ weighted</td><td style="padding:5px 8px;border-bottom:1px solid #f0f0f0"></td><td style="padding:5px 8px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0">$22,350</td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="padding:5px 8px;font-size:11px;color:#888;text-align:right;border-bottom:1px solid #f0f0f0">$22,350</td></tr>
-    <tr><td style="padding:5px 8px;font-size:12px;border-bottom:1px solid #f0f0f0">Spacial.io</td><td style="padding:5px 8px;font-size:11px;text-align:right;border-bottom:1px solid #f0f0f0">30%</td><td style="padding:5px 8px;font-size:11px;text-align:right;border-bottom:1px solid #f0f0f0">$300,000</td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0">$300,000</td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="padding:5px 8px;font-size:11px;font-weight:600;text-align:right;border-bottom:1px solid #f0f0f0">$300,000</td></tr>
-    <tr style="background:#f9f9f9"><td style="padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0">↳ weighted</td><td style="padding:5px 8px;border-bottom:1px solid #f0f0f0"></td><td style="padding:5px 8px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0">$90,000</td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="padding:5px 8px;font-size:11px;color:#888;text-align:right;border-bottom:1px solid #f0f0f0">$90,000</td></tr>
-    <tr><td style="padding:5px 8px;font-size:12px;border-bottom:1px solid #f0f0f0">Scaffplan Partnership</td><td style="padding:5px 8px;font-size:11px;text-align:right;border-bottom:1px solid #f0f0f0">30%</td><td style="padding:5px 8px;font-size:11px;text-align:right;border-bottom:1px solid #f0f0f0">$120,000</td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0">$120,000</td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="padding:5px 8px;font-size:11px;font-weight:600;text-align:right;border-bottom:1px solid #f0f0f0">$120,000</td></tr>
-    <tr style="background:#f9f9f9"><td style="padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0">↳ weighted</td><td style="padding:5px 8px;border-bottom:1px solid #f0f0f0"></td><td style="padding:5px 8px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0">$36,000</td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="padding:5px 8px;font-size:11px;color:#888;text-align:right;border-bottom:1px solid #f0f0f0">$36,000</td></tr>
-    <tr><td style="padding:5px 8px;font-size:12px;border-bottom:1px solid #f0f0f0">AISC Codes Integration</td><td style="padding:5px 8px;font-size:11px;text-align:right;border-bottom:1px solid #f0f0f0">50%</td><td style="padding:5px 8px;font-size:11px;text-align:right;border-bottom:1px solid #f0f0f0">$50,000</td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0">$50,000</td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="padding:5px 8px;font-size:11px;font-weight:600;text-align:right;border-bottom:1px solid #f0f0f0">$50,000</td></tr>
-    <tr style="background:#f9f9f9"><td style="padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0">↳ weighted</td><td style="padding:5px 8px;border-bottom:1px solid #f0f0f0"></td><td style="padding:5px 8px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0">$25,000</td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="padding:5px 8px;font-size:11px;color:#888;text-align:right;border-bottom:1px solid #f0f0f0">$25,000</td></tr>
-    <tr><td style="padding:5px 8px;font-size:12px;border-bottom:1px solid #f0f0f0">ICC Expansion</td><td style="padding:5px 8px;font-size:11px;text-align:right;border-bottom:1px solid #f0f0f0">30%</td><td style="padding:5px 8px;font-size:11px;text-align:right;border-bottom:1px solid #f0f0f0">$50,000</td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0">$50,000</td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;border-bottom:1px solid #f0f0f0"></td><td style="padding:5px 8px;font-size:11px;font-weight:600;text-align:right;border-bottom:1px solid #f0f0f0">$50,000</td></tr>
-    <tr style="background:#f9f9f9"><td style="padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0">↳ weighted</td><td style="padding:5px 8px;border-bottom:1px solid #f0f0f0"></td><td style="padding:5px 8px;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0">$15,000</td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="text-align:right;padding:5px 8px;font-size:11px;color:#888;border-bottom:1px solid #f0f0f0"></td><td style="padding:5px 8px;font-size:11px;color:#888;text-align:right;border-bottom:1px solid #f0f0f0">$15,000</td></tr>
-        <tr class="cf-total">
-          <td colspan="3" style="padding:6px 8px;font-size:12px">Total — gross</td>
-          <td style="text-align:right;padding:6px 8px;font-size:11px;font-weight:600">$670,000</td><td style="text-align:right;padding:6px 8px;font-size:11px;font-weight:600"></td><td style="text-align:right;padding:6px 8px;font-size:11px;font-weight:600"></td><td style="text-align:right;padding:6px 8px;font-size:11px;font-weight:600"></td><td style="text-align:right;padding:6px 8px;font-size:11px;font-weight:600"></td><td style="text-align:right;padding:6px 8px;font-size:11px;font-weight:600"></td><td style="text-align:right;padding:6px 8px;font-size:11px;font-weight:600">$124,500</td><td style="text-align:right;padding:6px 8px;font-size:11px;font-weight:600"></td><td style="text-align:right;padding:6px 8px;font-size:11px;font-weight:600"></td><td style="text-align:right;padding:6px 8px;font-size:11px;font-weight:600"></td><td style="text-align:right;padding:6px 8px;font-size:11px;font-weight:600"></td><td style="text-align:right;padding:6px 8px;font-size:11px;font-weight:600"></td>
-          <td style="text-align:right;padding:6px 8px;font-size:11px;font-weight:600">$794,500</td>
-        </tr>
-        <tr class="cf-total" style="background:#f2f2f2">
-          <td colspan="3" style="padding:6px 8px;font-size:12px">Total — probability-weighted</td>
-          <td style="text-align:right;padding:6px 8px;font-size:11px;color:#888">$321,000</td><td style="text-align:right;padding:6px 8px;font-size:11px;color:#888"></td><td style="text-align:right;padding:6px 8px;font-size:11px;color:#888"></td><td style="text-align:right;padding:6px 8px;font-size:11px;color:#888"></td><td style="text-align:right;padding:6px 8px;font-size:11px;color:#888"></td><td style="text-align:right;padding:6px 8px;font-size:11px;color:#888"></td><td style="text-align:right;padding:6px 8px;font-size:11px;color:#888">$47,350</td><td style="text-align:right;padding:6px 8px;font-size:11px;color:#888"></td><td style="text-align:right;padding:6px 8px;font-size:11px;color:#888"></td><td style="text-align:right;padding:6px 8px;font-size:11px;color:#888"></td><td style="text-align:right;padding:6px 8px;font-size:11px;color:#888"></td><td style="text-align:right;padding:6px 8px;font-size:11px;color:#888"></td>
-          <td style="text-align:right;padding:6px 8px;font-size:11px;font-weight:600">$368,350</td>
-        </tr>
-        <tr><td colspan="16" class="section-head">⚠ Billing frequency missing — excluded from forecast (3 deals · $1,201,622 TCV)</td></tr><tr style="background:#FAEEDA"><td colspan="3" style="padding:5px 8px;font-size:12px;border-bottom:1px solid #f0f0f0">ASTM Phase 2</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style="padding:5px 8px;font-size:11px;text-align:right;font-weight:600;border-bottom:1px solid #f0f0f0">$888,818</td></tr><tr style="background:#FAEEDA"><td colspan="3" style="padding:5px 8px;font-size:12px;border-bottom:1px solid #f0f0f0">New Millennium Joists (Vibration)</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style="padding:5px 8px;font-size:11px;text-align:right;font-weight:600;border-bottom:1px solid #f0f0f0">$249,724</td></tr><tr style="background:#FAEEDA"><td colspan="3" style="padding:5px 8px;font-size:12px;border-bottom:1px solid #f0f0f0">Nucor NBCC Adaptations</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#854F0B;border-bottom:1px solid #f0f0f0&quot;>⚠</td><td style="padding:5px 8px;font-size:11px;text-align:right;font-weight:600;border-bottom:1px solid #f0f0f0">$63,080</td></tr>
-        <tr><td colspan="16" class="section-head">No line items — cannot forecast (1 deals · $51,250 TCV)</td></tr><tr style="background:#FCEBEB"><td colspan="3" style="padding:5px 8px;font-size:12px;border-bottom:1px solid #f0f0f0">Basalt INTL</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#A32D2D;border-bottom:1px solid #f0f0f0&quot;>—</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#A32D2D;border-bottom:1px solid #f0f0f0&quot;>—</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#A32D2D;border-bottom:1px solid #f0f0f0&quot;>—</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#A32D2D;border-bottom:1px solid #f0f0f0&quot;>—</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#A32D2D;border-bottom:1px solid #f0f0f0&quot;>—</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#A32D2D;border-bottom:1px solid #f0f0f0&quot;>—</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#A32D2D;border-bottom:1px solid #f0f0f0&quot;>—</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#A32D2D;border-bottom:1px solid #f0f0f0&quot;>—</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#A32D2D;border-bottom:1px solid #f0f0f0&quot;>—</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#A32D2D;border-bottom:1px solid #f0f0f0&quot;>—</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#A32D2D;border-bottom:1px solid #f0f0f0&quot;>—</td><td style=&quot;text-align:right;padding:5px 8px;font-size:11px;color:#A32D2D;border-bottom:1px solid #f0f0f0&quot;>—</td><td style="padding:5px 8px;font-size:11px;text-align:right;font-weight:600;border-bottom:1px solid #f0f0f0">$51,250</td></tr>
-      </tbody>
-    </table>
-    </div>
-  </div>
-
-  <div class="meta-bar">
-    <span class="badge-claude">Generated by Claude</span>
-    <span>Enriched via: Notion + HubSpot  ·  5 deals enriched  ·  Fellow skipped (test mode)  ·  Run: 15 Jun 2026 02:35</span>
-    &nbsp;·&nbsp;
-    <span>HubSpot · Notion · 5 deals enriched</span>
-  </div>
+<div class="meta"><span class="badge-cl">Generated by Claude</span> &nbsp;·&nbsp; 18 Jun 2026 &nbsp;·&nbsp; HubSpot + Notion enrichment &nbsp;·&nbsp; Fellow skipped &nbsp;·&nbsp; 6 deals enriched · 3 High confidence write-backs queued</div>
 </div>
 
 <script>
-function show(id, btn) {
-  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('pane-'+id).classList.add('active');
-  btn.classList.add('active');
+const TODAY=new Date('2026-06-18');
+const fmt$=v=>v?'$'+Math.round(v).toLocaleString():'—';
+const fmtD=s=>{if(!s)return'—';const d=new Date(s);return d.toLocaleDateString('en-AU',{day:'2-digit',month:'short',year:'2-digit'})};
+const dD=s=>{if(!s)return 999;return Math.round((TODAY-new Date(s))/86400000)};
+const dT=s=>{if(!s)return null;return Math.round((new Date(s)-TODAY)/86400000)};
+const VBS={PROGRESSING:'#EAF3DE,#3B6D11',AGING:'#FAEEDA,#854F0B',ZOMBIE:'#FCEBEB,#A32D2D'};
+const PL={P1:'P1 Urgent',P2:'P2 High',P3:'P3 Med',P4:'P4 Low',P5:'P5 Unq'};
+
+const DEALS=[
+  {id:39576564408,n:'ASTM Phase 2',st:'Contracting/Legal',tcv:888818,prob:.9,cl:'2026-12-31',ln:'2026-05-05',ns:'Awaiting Jane response (sent 2 May) — no reply in 6 weeks',hy:'⚠ ZOMBIE 44d · Stale next step',pr:'P1',vel:'ZOMBIE',isnew:false,sug:false},
+  {id:39576195256,n:'ICC-ES Digitisation Solution',st:'Contracting/Legal',tcv:337450,prob:.9,cl:'2026-06-12',ln:'2026-06-17',ns:'Submit milestone 1 doc + prototype by Jul 30',hy:'⚠ Close date overdue (12 Jun)',pr:'P1',vel:'PROGRESSING',isnew:false,sug:false},
+  {id:54403263535,n:'Nucor Enterprise API & Licensing',st:'Contracting/Legal',tcv:200000,prob:.9,cl:'2026-07-01',ln:'2026-06-17',ns:'',hy:'⚠ No next step · MEDDPICC gaps',pr:'P1',vel:'PROGRESSING',isnew:false,sug:true,sugT:'Chris to check with Brian Hills on pilot UAT signoff criteria — confirm remaining gaps (wind, sliding snow, asymmetric gables) and ETA to trigger $200K Order Form. By Fri 20 Jun.',ev:'Notion Nucor deal page (Apr 30): "Track pilot completion criteria with Brian — formal gate to the Order Form."',cf:'High'},
+  {id:60423900571,n:'Nucor Year 2 API Expansion',st:'Prospecting',tcv:720000,prob:.1,cl:'2027-06-01',ln:'2026-06-17',ns:'',hy:'⚠ No next step · High value at Prospecting',pr:'P2',vel:'PROGRESSING',isnew:true,sug:true,sugT:"Align internally on when to open Y2 conversation with Brian Hills ($720K target). Don't open before Y1 Order Form signs. Prepare Y2 narrative for Brian by Jul 2026.",ev:'Notion Nucor deal page — open item: "Y2 expansion narrative — when do we open with Brian on $1.3M scaling?"',cf:'Medium'},
+  {id:60419922040,n:'AISC Calculator Creation',st:'Prospecting',tcv:499890,prob:.1,cl:'2026-11-30',ln:'2026-06-16',ns:'',hy:'⚠ No next step · Budget deadline July · HubSpot stage/prob stale (real ~45-50%)',pr:'P2',vel:'PROGRESSING',isnew:true,sug:true,sugT:'Book engineering scoping session (Laurent + Demetry ↔ Melissa Gradecki, gradecki@aisc.org) before week of 13 Jul. Produce 2–5 pilot calc concepts + cost envelopes for Melissa\'s July budget submission. Jul 14 Chicago on-site is the forcing function.',ev:'Notion AISC Calculator Creation deal page (updated 2 days ago, Jun 16): scoping call Jun 15, Melissa is champion, budget submission due July.',cf:'High'},
+  {id:60423961767,n:'Spacial Go Live',st:'Proposal',tcv:249996,prob:.5,cl:'2026-10-31',ln:'2026-06-11',ns:'Meeting Maor + Ami to negotiate CY27 deal',hy:'⚠ MEDDPICC gaps',pr:'P2',vel:'PROGRESSING',isnew:true,sug:false},
+  {id:53696617123,n:'Scaffplan Partnership',st:'Proposal',tcv:120000,prob:.5,cl:'2026-08-31',ln:'2026-06-07',ns:'Laurent + Juan Pablo with Ben Beaumont Apr 7 — SOW to define proposal within April',hy:'⚠ Stale next step (Apr deadlines passed)',pr:'P2',vel:'PROGRESSING',isnew:false,sug:false},
+  {id:46794522170,n:'AISC Codes Integration — Pilot',st:'Proposal',tcv:96000,prob:.5,cl:'2026-08-31',ln:'2026-06-17',ns:'Book Luke by May 2. Package for Melissa by May 9.',hy:'⚠ Stale next step (May deadlines passed)',pr:'P2',vel:'PROGRESSING',isnew:false,sug:false},
+  {id:48536191024,n:'Spacial.io Pilot',st:'Negotiation',tcv:25000,prob:.7,cl:'2026-06-30',ln:'2026-06-09',ns:'Testing API integrations — proposal expected Q2',hy:'⚠ Closing 12 days · Billing freq missing',pr:'P2',vel:'PROGRESSING',isnew:false,sug:false},
+  {id:46825463186,n:'SCIA + SDS2 / Allplan Integration',st:'Need Analysis',tcv:50000,prob:.5,cl:null,ln:'2026-06-16',ns:'',hy:'⚠ No next step · No close date · $50K placeholder (real ~$1M+)',pr:'P2',vel:'PROGRESSING',isnew:false,sug:true,sugT:"Follow up on Apr 30 deal review outcomes: set HubSpot close date, move to Proposal, confirm pilot scope (stairs calc) with SCIA. Follow up with Michelle McCarthy on commercial framework. By Fri 20 Jun 2026.",ev:'Notion SCIA deal page (May 7): Apr 30 deal review with Mark was the gate — close date and stage move to Proposal were open items.',cf:'High'},
+  {id:42448886830,n:'ICC Expansion — Maps + More Calcs',st:'Proposal',tcv:50000,prob:.5,cl:'2026-08-31',ln:'2026-06-17',ns:'Sales studying SOW — V1 proposal due Mar 30 (stale)',hy:'⚠ Stale next step',pr:'P3',vel:'PROGRESSING',isnew:false,sug:false},
+  {id:61024651290,n:'Nucor Cold Formed Truss Pilot',st:'Proposal',tcv:49970,prob:.5,cl:'2026-07-09',ln:'2026-06-17',ns:'Laurent to prep using CFB as basis',hy:'⚠ Billing freq missing · Close Jul 9 (21d)',pr:'P3',vel:'PROGRESSING',isnew:true,sug:false},
+  {id:55126348615,n:'Basalt INTL — Calculators & Webinars',st:'Need Analysis',tcv:50000,prob:.3,cl:'2026-09-30',ln:'2026-06-01',ns:'Internal review — awaiting spreadsheet from Tim',hy:'⚠ Aged 17d',pr:'P3',vel:'AGING',isnew:false,sug:false},
+  {id:55035110435,n:'Fortress BP — LSF Decks',st:'Need Analysis',tcv:34000,prob:.3,cl:'2026-12-01',ln:'2026-06-14',ns:'Define SOW — 2026 budget blocker, reopen Q3',hy:'⚠ Billing freq missing (Impl $19K)',pr:'P3',vel:'PROGRESSING',isnew:false,sug:false},
+  {id:55396500503,n:'Verco / Vulcraft Decks',st:'Discovery',tcv:100000,prob:.2,cl:'2026-08-31',ln:'2026-06-17',ns:'Discovery call with Brian Bogh',hy:'',pr:'P4',vel:'PROGRESSING',isnew:false,sug:false},
+  {id:60642947144,n:'Sofistik Integration Pilot',st:'Discovery',tcv:50000,prob:.2,cl:'2026-09-30',ln:'2026-05-20',ns:'Send API details and connect with Paritosh',hy:'⚠ Aged 29d',pr:'P4',vel:'AGING',isnew:true,sug:false},
+  {id:59186399926,n:'MST Bar — Calculators + Webinar',st:'Discovery',tcv:15000,prob:.2,cl:'2026-08-31',ln:'2026-04-18',ns:'Set up discovery with Dan Lauzon',hy:'⚠ ZOMBIE 61d',pr:'P4',vel:'ZOMBIE',isnew:false,sug:false},
+  {id:59953151123,n:'GRM Custom Products',st:'Discovery',tcv:15000,prob:.2,cl:'2026-07-31',ln:'2026-05-08',ns:'',hy:'⚠ No next step · 41d dark',pr:'P4',vel:'AGING',isnew:false,sug:true,sugT:'Book discovery call with GRM or close lost — 41 days since last activity. By 25 Jun 2026.',ev:'HubSpot deal data — last notes 2026-05-08. Stage logic only.',cf:'Low'},
+  {id:54403040368,n:'Scaffcalc Partnership',st:'Prospecting',tcv:50000,prob:.1,cl:'2026-11-30',ln:'2026-02-26',ns:'Discovery call rescheduled for May (stale)',hy:'⚠ ZOMBIE 112d',pr:'P4',vel:'ZOMBIE',isnew:false,sug:false},
+  {id:59967957528,n:'Nucor Structural AI — Phase 2',st:'Discovery',tcv:0,prob:.2,cl:'2026-12-31',ln:'2026-06-17',ns:'',hy:'⚠ No next step · New deal',pr:'P5',vel:'PROGRESSING',isnew:false,sug:true,sugT:"Book scoping call — link to Nucor relationship (Brian Hills). Don't progress before Y1 Order Form signs.",ev:'Deal age + active Nucor account context. Stage logic.',cf:'Low'},
+  {id:60640774912,n:'CISC Standards Partnership',st:'Prospecting',tcv:0,prob:.1,cl:'2026-12-31',ln:'2026-06-10',ns:'Lock AISC then chase with terms',hy:'',pr:'P5',vel:'PROGRESSING',isnew:true,sug:false},
+  {id:60642949409,n:'Standards Australia Calc Licensing',st:'Prospecting',tcv:0,prob:.1,cl:'2027-06-30',ln:'2026-06-12',ns:'Follow up with Evan to start conversations',hy:'',pr:'P5',vel:'PROGRESSING',isnew:true,sug:false},
+  {id:60642949223,n:'Atlas CY26 Unused Budget',st:'Prospecting',tcv:0,prob:.1,cl:'2026-10-31',ln:'2026-06-17',ns:'Strategise with Owen/Karen and Laurent/Abigail',hy:'',pr:'P5',vel:'PROGRESSING',isnew:true,sug:false},
+];
+
+const PO={P1:1,P2:2,P3:3,P4:4,P5:5};
+
+function ST(id,btn){document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));document.getElementById('pane-'+id).classList.add('on');btn.classList.add('on');}
+
+function FT(v){document.querySelectorAll('#ptb tr').forEach(r=>{const b=r.querySelector('.badge');if(!b)return;const p=b.className.split(' ').find(c=>/^P\d$/.test(c));r.style.display=(v==='all'||p===v)?'':'none';});}
+
+function init(){
+  const tb=document.getElementById('ptb');
+  const sorted=[...DEALS].sort((a,b)=>PO[a.pr]-PO[b.pr]);
+  tb.innerHTML=sorted.map(d=>{
+    const dd=dD(d.ln),dt=dT(d.cl);
+    const cc=(!d.cl||dt<0||(dt!==null&&dt<=7))?'rc':(dt!==null&&dt<=14?'ac':'');
+    const nc=!d.ns?'rc':'';
+    const dc=dd>60?'rc':dd>14?'ac':'';
+    const [vbg,vfg]=VBS[d.vel].split(',');
+    const ns=d.isnew?'<span class="nb">new</span>':'';
+    const zb=d.vel==='ZOMBIE'?'<span class="zb">💀</span>':'';
+    const eb=d.sug?'<span class="eb">✦ enriched</span>':'';
+    return `<tr><td><span class="badge ${d.pr}">${PL[d.pr]}</span></td>
+      <td style="white-space:normal;word-break:break-word"><a href="https://app.hubspot.com/contacts/45881215/record/0-3/${d.id}" target="_blank" style="color:#185FA5;text-decoration:none">${d.n}</a>${ns}${zb}${eb}</td>
+      <td>${d.st}</td>
+      <td style="text-align:right">${fmt$(d.tcv)}</td>
+      <td style="text-align:right">${Math.round(d.prob*100)}%</td>
+      <td class="${cc}">${fmtD(d.cl)}</td>
+      <td><span style="font-size:10px;padding:1px 6px;border-radius:99px;background:${vbg};color:${vfg}">${d.vel}</span></td>
+      <td class="${nc}" style="white-space:normal;word-break:break-word">${d.ns||'⚠ No next step'}</td>
+      <td style="color:#888;white-space:normal;word-break:break-word">${d.hy}</td>
+    </tr>`;
+  }).join('');
+
+  const ec=document.getElementById('ec');
+  const enriched=DEALS.filter(d=>d.sug).sort((a,b)=>PO[a.pr]-PO[b.pr]);
+  ec.innerHTML=enriched.map(d=>{
+    const gaps=[];if(!d.ns)gaps.push('No next step');
+    return `<div class="ecard">
+      <div class="ehdr"><span class="badge ${d.pr}">${PL[d.pr]}</span><strong style="font-size:12px">${d.n}</strong>${gaps.map(g=>`<span class="gtag">${g}</span>`).join('')}</div>
+      <div class="ebox">
+        <div class="ebl">Suggested next step &nbsp;<span class="badge ${d.cf==='High'?'ch':d.cf==='Medium'?'cm':'cl'}">${d.cf} confidence</span></div>
+        <div class="ebv">${d.sugT}</div>
+        <div class="ebsrc">${d.ev}</div>
+      </div>
+      <div style="font-size:10px;color:#999">To approve this write-back, open the audit in Claude and use the Write-back Queue tab.</div>
+    </div>`;
+  }).join('');
 }
-function filterTable(val) {
-  const rows = document.querySelectorAll('#pipeline-table tbody tr');
-  rows.forEach(r => {
-    const badge = r.querySelector('span');
-    if (!badge) return;
-    const txt = badge.textContent;
-    const match = val === 'all' || txt.startsWith(val.replace('P','P').slice(0,2));
-    r.style.display = match ? '' : 'none';
-  });
-}
+init();
 </script>
 </body>
 </html>
