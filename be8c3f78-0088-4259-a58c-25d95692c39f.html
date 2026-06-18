@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pipeline Intel — 18 Jun 2026 — 10:18 AEST</title>
+<style>
+:root{--ink:#0f172a;--sub:#475569;--line:#e2e8f0;--bg:#f8fafc}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);font-size:13px;line-height:1.45}
+.wrap{max-width:1100px;margin:0 auto;padding:24px}
+header{background:#0f172a;color:#fff;border-radius:12px;padding:20px 24px;margin-bottom:16px}
+header h1{margin:0 0 4px;font-size:20px;letter-spacing:-.01em}
+header .meta{color:#94a3b8;font-size:12px}
+.banner{background:#fffbeb;border:1px solid #fde68a;color:#78350f;border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:12.5px}
+.banner b{color:#92400e}
+.ro{background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;border-radius:10px;padding:10px 16px;margin-bottom:16px;font-size:12.5px}
+.kpis{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 16px;flex:1;min-width:120px}
+.kpi .v{font-size:20px;font-weight:700}
+.kpi .l{font-size:11px;color:var(--sub);text-transform:uppercase;letter-spacing:.04em}
+h2{font-size:15px;margin:22px 0 8px}
+.sub{color:var(--sub);font-size:12px;margin:0 0 10px}
+table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:12px}
+th{text-align:left;background:#f1f5f9;color:#334155;font-weight:600;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:8px 10px;border-top:1px solid #f1f5f9;vertical-align:top}
+td.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+td.name{font-weight:600;max-width:280px}
+td.gap{color:#b45309;font-size:11px}
+.chip{display:inline-block;padding:1px 8px;border-radius:999px;border:1px solid transparent;font-size:11px;font-weight:600;white-space:nowrap}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.card-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.card-title{font-weight:700;font-size:13px}
+.card-row{display:grid;grid-template-columns:120px 1fr;gap:10px;margin-top:6px}
+.lab{color:var(--sub);font-size:11px;text-transform:uppercase;letter-spacing:.03em;padding-top:1px}
+.val{font-size:12.5px}
+.muted{color:var(--sub)}
+footer{color:var(--sub);font-size:11px;margin-top:24px;border-top:1px solid var(--line);padding-top:12px}
+@media print{body{background:#fff;font-size:11px}.wrap{padding:0}header{background:#0f172a !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.chip,th,.banner,.ro,.kpi,.card{-webkit-print-color-adjust:exact;print-color-adjust:exact}.ro{display:none}table,.card{page-break-inside:avoid}}
+</style></head>
+<body><div class="wrap">
+<header>
+  <h1>Enterprise Pipeline Intel</h1>
+  <div class="meta">Run 18 Jun 2026 — 10:18 AEST · Nikara (Pipeline Intel Artifact) · Sources: HubSpot (incl. on-record emails) + Fellow + Slack + Notion</div>
+</header>
+
+<div class="ro">📄 <b>Read-only export.</b> Open the live artifact in Claude to approve and write next-step suggestions back to HubSpot. This file is a frozen snapshot.</div>
+
+<div class="banner">⚠ <b>Read the numbers with two caveats.</b> (1) TCV totals blend USD and AUD with no FX conversion — treat the ~$1.8M weighted figure as nominal. (2) "Days in stage" is a createdate proxy; weight <b>Days Dark</b> (days since last activity) instead. The velocity rule flags 13 deals as stalled, but only 2 are genuinely dark &gt;60 days (MST Bar, Scaffcalc) — most are actively progressing.</div>
+
+<div class="kpis">
+  <div class="kpi"><div class="v">23</div><div class="l">Open deals</div></div>
+  <div class="kpi"><div class="v">7 / 5 / 3 / 8</div><div class="l">P1 / P2 / P3 / P4</div></div>
+  <div class="kpi"><div class="v">$1,797,313</div><div class="l">Weighted TCV (blended)</div></div>
+  <div class="kpi"><div class="v">6 / 5 / 0</div><div class="l">No-next-step / billing-freq / line-item gaps</div></div>
+</div>
+
+<h2>Pipeline — prioritised</h2>
+<p class="sub">All 23 open enterprise deals (owner: Chris). Sorted by priority, then TCV.</p>
+<table>
+<thead><tr><th>Pri</th><th>Deal</th><th>Stage</th><th>TCV</th><th>Close</th><th>Days dark</th><th>Next step</th><th>Gaps</th></tr></thead>
+<tbody><tr>
+      <td><span class="chip" style="color:#9f1239;background:#ffe4e6;border-color:#fecdd3">P1</span></td>
+      <td class="name">ASTM Phase 2 - 100 Calcs</td>
+      <td>Contracting/Legal</td>
+      <td class="num">888,818 USD</td>
+      <td style="color:#475569">2026-12-31</td>
+      <td class="num">44</td>
+      <td><span style="color:#94a3b8">Awaiting Jane response to MathML/AI dual-ROI reply (sent 2026-05-02). </span></td>
+      <td class="gap">billing-freq</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#9f1239;background:#ffe4e6;border-color:#fecdd3">P1</span></td>
+      <td class="name">ICC-ES Digitisation Solution</td>
+      <td>Contracting/Legal</td>
+      <td class="num">337,450 USD</td>
+      <td style="color:#e11d48;font-weight:600">2026-06-12</td>
+      <td class="num">1</td>
+      <td><span style="color:#94a3b8">Submit milestone 1 document and prototype by Jul 30th</span></td>
+      <td class="gap">—</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#9f1239;background:#ffe4e6;border-color:#fecdd3">P1</span></td>
+      <td class="name">Nucor Enterprise API &amp; Licensing</td>
+      <td>Contracting/Legal</td>
+      <td class="num">200,000 USD</td>
+      <td style="color:#475569">2026-07-01</td>
+      <td class="num">1</td>
+      <td><span style="color:#e11d48;font-weight:600">⚠ BLANK</span></td>
+      <td class="gap">next-step</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#9f1239;background:#ffe4e6;border-color:#fecdd3">P1</span></td>
+      <td class="name">Scaffplan Partnership</td>
+      <td>Proposal</td>
+      <td class="num">120,000 AUD</td>
+      <td style="color:#475569">2026-08-31</td>
+      <td class="num">11</td>
+      <td><span style="color:#94a3b8">Technical Sponsors (Laurent and Juan Pablo) set for meeting with Ben B</span></td>
+      <td class="gap">—</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#9f1239;background:#ffe4e6;border-color:#fecdd3">P1</span></td>
+      <td class="name">AISC Codes Integration — Pilot</td>
+      <td>Proposal</td>
+      <td class="num">96,000 USD</td>
+      <td style="color:#475569">2026-08-31</td>
+      <td class="num">1</td>
+      <td><span style="color:#94a3b8">Book Luke for June board prep call. Convert NASCC warmth. Package stru</span></td>
+      <td class="gap">—</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#9f1239;background:#ffe4e6;border-color:#fecdd3">P1</span></td>
+      <td class="name">SCIA + SDS2 / Allplan Integration</td>
+      <td>Need Analysis</td>
+      <td class="num">50,000 USD</td>
+      <td style="color:#e11d48;font-weight:600">⚠ none</td>
+      <td class="num">2</td>
+      <td><span style="color:#e11d48;font-weight:600">⚠ BLANK</span></td>
+      <td class="gap">next-step, billing-freq</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#9f1239;background:#ffe4e6;border-color:#fecdd3">P1</span></td>
+      <td class="name">Spacial.io Pilot</td>
+      <td>Negotiation</td>
+      <td class="num">25,000 USD</td>
+      <td style="color:#475569">2026-06-30</td>
+      <td class="num">9</td>
+      <td><span style="color:#94a3b8">Spacial.io using our platform and testing API integrations. Expect pro</span></td>
+      <td class="gap">billing-freq</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#92400e;background:#fef3c7;border-color:#fde68a">P2</span></td>
+      <td class="name">Spacial Go Live</td>
+      <td>Proposal</td>
+      <td class="num">249,996 USD</td>
+      <td style="color:#475569">2026-10-31</td>
+      <td class="num">9</td>
+      <td><span style="color:#94a3b8">Meeting Maor and Ami to negotiate CY27 deal</span></td>
+      <td class="gap">—</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#92400e;background:#fef3c7;border-color:#fde68a">P2</span></td>
+      <td class="name">Verco / Vulcraft Decks</td>
+      <td>Discovery</td>
+      <td class="num">100,000 USD</td>
+      <td style="color:#475569">2026-08-31</td>
+      <td class="num">1</td>
+      <td><span style="color:#94a3b8">Discovery call with Brian Bogh</span></td>
+      <td class="gap">—</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#92400e;background:#fef3c7;border-color:#fde68a">P2</span></td>
+      <td class="name">Basalt INTL - Calculators &amp; Webinars</td>
+      <td>Need Analysis</td>
+      <td class="num">50,000 USD</td>
+      <td style="color:#475569">2026-09-30</td>
+      <td class="num">17</td>
+      <td><span style="color:#94a3b8">Internal review - meeting with Tim (VP Eng), need to define SOW to pre</span></td>
+      <td class="gap">—</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#92400e;background:#fef3c7;border-color:#fde68a">P2</span></td>
+      <td class="name">ICC Expansion - Maps + More Calcs</td>
+      <td>Proposal</td>
+      <td class="num">50,000 USD</td>
+      <td style="color:#475569">2026-08-31</td>
+      <td class="num">1</td>
+      <td><span style="color:#94a3b8">Sales studying SOW to draft proposal - V1 to be submitted by March 30t</span></td>
+      <td class="gap">—</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#92400e;background:#fef3c7;border-color:#fde68a">P2</span></td>
+      <td class="name">Fortress BP - LSF Decks</td>
+      <td>Need Analysis</td>
+      <td class="num">34,000 USD</td>
+      <td style="color:#475569">2026-12-01</td>
+      <td class="num">4</td>
+      <td><span style="color:#94a3b8">Define SOW, but 2026 budget is the blocker. Convo to be reopen by Q3.</span></td>
+      <td class="gap">billing-freq</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#075985;background:#e0f2fe;border-color:#bae6fd">P3</span></td>
+      <td class="name">Nucor Year 2 API Expansion</td>
+      <td>Prospecting</td>
+      <td class="num">720,000 USD</td>
+      <td style="color:#475569">2027-06-01</td>
+      <td class="num">1</td>
+      <td><span style="color:#e11d48;font-weight:600">⚠ BLANK</span></td>
+      <td class="gap">next-step</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#075985;background:#e0f2fe;border-color:#bae6fd">P3</span></td>
+      <td class="name">AISC Calculator Creation</td>
+      <td>Prospecting</td>
+      <td class="num">499,890 USD</td>
+      <td style="color:#475569">2026-11-30</td>
+      <td class="num">7</td>
+      <td><span style="color:#e11d48;font-weight:600">⚠ BLANK</span></td>
+      <td class="gap">next-step</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#075985;background:#e0f2fe;border-color:#bae6fd">P3</span></td>
+      <td class="name">Nucor Cold Formed Truss Pilot</td>
+      <td>Proposal</td>
+      <td class="num">49,970 USD</td>
+      <td style="color:#475569">2026-07-09</td>
+      <td class="num">1</td>
+      <td><span style="color:#94a3b8">Laurent to prep using CFB as basis</span></td>
+      <td class="gap">billing-freq</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#334155;background:#f1f5f9;border-color:#e2e8f0">P4</span></td>
+      <td class="name">Sofistik Integration Pilot</td>
+      <td>Discovery</td>
+      <td class="num">50,000 AUD</td>
+      <td style="color:#475569">2026-09-30</td>
+      <td class="num">29</td>
+      <td><span style="color:#94a3b8">Send API details and connect with Paritosh</span></td>
+      <td class="gap">—</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#334155;background:#f1f5f9;border-color:#e2e8f0">P4</span></td>
+      <td class="name">Scaffcalc Partnership</td>
+      <td>Prospecting</td>
+      <td class="num">50,000 USD</td>
+      <td style="color:#475569">2026-11-30</td>
+      <td class="num">112</td>
+      <td><span style="color:#94a3b8">Discovery call rescheduled for May as per customer&#x27;s request.</span></td>
+      <td class="gap">—</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#334155;background:#f1f5f9;border-color:#e2e8f0">P4</span></td>
+      <td class="name">GRM Custom Products - Specification Embed</td>
+      <td>Discovery</td>
+      <td class="num">15,000 AUD</td>
+      <td style="color:#475569">2026-07-31</td>
+      <td class="num">41</td>
+      <td><span style="color:#e11d48;font-weight:600">⚠ BLANK</span></td>
+      <td class="gap">next-step</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#334155;background:#f1f5f9;border-color:#e2e8f0">P4</span></td>
+      <td class="name">MST Bar - [Calculators + Webinar]</td>
+      <td>Discovery</td>
+      <td class="num">15,000 USD</td>
+      <td style="color:#475569">2026-08-31</td>
+      <td class="num">61</td>
+      <td><span style="color:#94a3b8">Set up discovery with sales leader - Dan Lauzon (new guy).</span></td>
+      <td class="gap">—</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#334155;background:#f1f5f9;border-color:#e2e8f0">P4</span></td>
+      <td class="name">CISC Standards Partnership</td>
+      <td>Prospecting</td>
+      <td class="num">0 USD</td>
+      <td style="color:#475569">2026-12-31</td>
+      <td class="num">8</td>
+      <td><span style="color:#94a3b8">Lock AISC then chase with terms</span></td>
+      <td class="gap">—</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#334155;background:#f1f5f9;border-color:#e2e8f0">P4</span></td>
+      <td class="name">Standards Australia Calc Licensing</td>
+      <td>Prospecting</td>
+      <td class="num">0 AUD</td>
+      <td style="color:#475569">2027-06-30</td>
+      <td class="num">6</td>
+      <td><span style="color:#94a3b8">Follow up with Evan to get connected and start conversations</span></td>
+      <td class="gap">—</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#334155;background:#f1f5f9;border-color:#e2e8f0">P4</span></td>
+      <td class="name">Atlas CY 26 Unused Budget</td>
+      <td>Prospecting</td>
+      <td class="num">0 USD</td>
+      <td style="color:#475569">2026-10-31</td>
+      <td class="num">1</td>
+      <td><span style="color:#94a3b8">Strategise with Owen/Karen and Laurent/Abigail</span></td>
+      <td class="gap">—</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#334155;background:#f1f5f9;border-color:#e2e8f0">P4</span></td>
+      <td class="name">Nucor Structural AI - Phase 2</td>
+      <td>Discovery</td>
+      <td class="num">0 USD</td>
+      <td style="color:#475569">2026-12-31</td>
+      <td class="num">1</td>
+      <td><span style="color:#e11d48;font-weight:600">⚠ BLANK</span></td>
+      <td class="gap">next-step</td>
+    </tr></tbody>
+</table>
+
+<h2>Enrichment — evidence-backed suggestions</h2>
+<p class="sub">6 deals enriched from Fellow, Slack &amp; Notion. High = ready to write back; Medium = needs approval; Low = visibility only.</p>
+<div class="card">
+      <div class="card-head">
+        <span class="card-title">Nucor Enterprise API &amp; Licensing</span>
+        <span class="chip" style="color:#065f46;background:#d1fae5">🟢 High confidence</span>
+      </div>
+      <div class="card-row"><span class="lab">Suggested next step</span><div class="val">Laurent to push Brian Hills to countersign the agreed $200K p.a. enterprise plan and revise/uplift the quote per Nucor&#x27;s own steer (they flagged it ~10x under their internal cost). Ring-fence the new scope Brian keeps opening — the AI workstream (John Henson) and the Cold Form Truss (needs an NDA, via Josh McDonald), per his 17 Jun email — as paid SoW rather than free expansion until the plan is signed. Close out enterprise T&amp;Cs (SLA, data residency, audit). Target by 22 Jun.</div></div>
+      <div class="card-row"><span class="lab">Evidence</span><div class="val muted">Fellow GTM Biweekly 10 Jun: &quot;Laurent will push Brian to either do edge requests as paid SoW or sign onto the 200k p.a. plan as agreed.&quot; Mark/Nikara 27 May &amp; 10 Jun: Nucor called the quote ~10x too cheap and are holding work. Logged email on the deal record 17 Jun: Brian opens further scope (AI via John Henson; Cold Form Truss NDA via Josh McDonald) with no movement yet on the signature — reinforces the paid-SoW posture.</div></div>
+      <div class="card-row"><span class="lab">Contact</span><div class="val muted">Brian Hills, Nucor (260.414.6446) — economic-buyer route via Laurent</div></div>
+      <div class="card-row"><span class="lab">Sources found</span><div class="val muted">Fellow (GTM 10 Jun), HubSpot email on deal record (17 Jun), Slack #client-nucor, Notion Commercial Planning page</div></div>
+    </div><div class="card">
+      <div class="card-head">
+        <span class="card-title">SCIA + SDS2 / Allplan Integration</span>
+        <span class="chip" style="color:#065f46;background:#d1fae5">🟢 High confidence</span>
+      </div>
+      <div class="card-row"><span class="lab">Suggested next step</span><div class="val">Re-book the cancelled Michelle McCarthy (Allplan) call — she cancelled 17 Jun for a family bereavement and is re-picking a time, so keep it warm and confirm a new slot — to workshop the SDS2 reseller-bundle structure, bundle contents/roadmap, and bundle valuation, and build a shared forecast model. In parallel, chase Jad to schedule the SCIA-side integration experiment (mirroring the successful SDS2 demo with David). Move to Proposal once the bundle model is agreed. $50K is a placeholder; the reseller-bundle motion is the path to the ~$1M+ value.</div></div>
+      <div class="card-row"><span class="lab">Evidence</span><div class="val muted">Logged email thread on the deal record, Chris ⇄ Michelle McCarthy (Allplan), latest 16–17 Jun: SDS2 demo with David &#x27;gone even better than planned&#x27; (Loom shared); reseller-bundle approach discussed at NASCC; a booked call was cancelled 17 Jun (family bereavement) and is being rescheduled. Chris is &#x27;chasing Jad for a time on the SCIA side to run a similar experiment.&#x27; Supersedes the earlier &#x27;confirm stairs-calc pilot / contact Michelle&#x27; framing.</div></div>
+      <div class="card-row"><span class="lab">Contact</span><div class="val muted">Michelle McCarthy (commercial, Allplan/SDS2); David + Dzabka (technical); Jad (SCIA side)</div></div>
+      <div class="card-row"><span class="lab">Sources found</span><div class="val muted">HubSpot email on deal record (9–17 Jun), Notion SCIA deal page, Fellow (GTM 10 Jun)</div></div>
+    </div><div class="card">
+      <div class="card-head">
+        <span class="card-title">Nucor Year 2 API Expansion</span>
+        <span class="chip" style="color:#92400e;background:#fef3c7">🟡 Medium confidence</span>
+      </div>
+      <div class="card-row"><span class="lab">Suggested next step</span><div class="val">Confirm a ClearCalcs speaker + scope for Nucor&#x27;s 15–16 Sep Portland &#x27;war room&#x27;, and frame Year-2 API expansion (CFB→API + environmental-loads API toward the 2027 full-plane-design launch) as a paid scope of work. Brian&#x27;s 17 Jun note opening the AI workstream (John Henson) and Cold Form Truss is exactly the Year-2 expansion surface — keep each as paid SoW. Laurent to align with Brian by end of July.</div></div>
+      <div class="card-row"><span class="lab">Evidence</span><div class="val muted">Slack #client-nucor 16 May: CFB→API vision, env-loads API, full plane design by 2027; 15–16 Sep Portland war room booked by Laurent. GTM 10 Jun: additional Nucor API edge-requests to be handled as paid SoW. Logged email on the deal record 17 Jun (Brian Hills) opens further scope (AI; Cold Form Truss NDA) — reinforces the paid-SoW posture.</div></div>
+      <div class="card-row"><span class="lab">Contact</span><div class="val muted">Brian Hills (Nucor) via Laurent</div></div>
+      <div class="card-row"><span class="lab">Sources found</span><div class="val muted">Slack #client-nucor 16 May, Fellow (GTM 10 Jun), HubSpot email on deal record (17 Jun)</div></div>
+    </div><div class="card">
+      <div class="card-head">
+        <span class="card-title">AISC Calculator Creation</span>
+        <span class="chip" style="color:#92400e;background:#fef3c7">🟡 Medium confidence</span>
+      </div>
+      <div class="card-row"><span class="lab">Suggested next step</span><div class="val">Follow up on the 15 Jun check-in with Melissa Gradecki and the AISC board outcome (board met week of 8 Jun; decision expected week of 15 Jun), and lock the 14 Jul Chicago in-person (Chris is there for ICC + Atlas Tube). Progress the partnership proposal — the digital standards viewer (tech-complete via the Standards Australia work) as the near-term anchor, with calculator-creation/AI scope to follow — and finalise the financial model already shared with Hurd/Faulkner and George.</div></div>
+      <div class="card-row"><span class="lab">Evidence</span><div class="val muted">Logged email thread on the deal record with Melissa Gradecki (gradecki@aisc.org), latest 11 Jun: 15 Jun check-in booked, board outcome due week of 15 Jun, 14 Jul Chicago in-person being arranged. Separate &quot;AISC proposal financial inputs&quot; thread (15–25 May) with Hurd/Faulkner, forwarded to George Turnbull. Note: this $499,890 record is the calculator-creation/YR2 scope within the broader partnership the thread covers — deal↔thread mapping carries mild inference.</div></div>
+      <div class="card-row"><span class="lab">Contact</span><div class="val muted">Melissa Gradecki, Senior Engineer – Innovation, AISC Steel Solutions Center (gradecki@aisc.org); Hurd/Faulkner on commercials</div></div>
+      <div class="card-row"><span class="lab">Sources found</span><div class="val muted">HubSpot email on deal record (May–11 Jun), Fellow (GTM 27 May)</div></div>
+    </div><div class="card">
+      <div class="card-head">
+        <span class="card-title">GRM Custom Products - Specification Embed</span>
+        <span class="chip" style="color:#92400e;background:#fef3c7">🟡 Medium confidence</span>
+      </div>
+      <div class="card-row"><span class="lab">Suggested next step</span><div class="val">Follow up on the GRM line-sheet review and book the clarification call Chris promised Linda Smith on 8 May. GRM (a steel products manufacturer met at NASCC Atlanta) wants to be specified/embedded in ClearCalcs — confirm the specification-embed scope and decision-maker, and set a close date. ~6 weeks since last contact, no reply logged.</div></div>
+      <div class="card-row"><span class="lab">Evidence</span><div class="val muted">Logged email thread on the deal record: Linda Smith (linda.smith@grmcp.com), 2 May — &quot;GRM is interested in being specified within your software. Let us know next steps &amp; how we can help you facilitate that.&quot; Chris replied 8 May that engineering was reviewing and he&#x27;d revert to set a time; nothing logged since.</div></div>
+      <div class="card-row"><span class="lab">Contact</span><div class="val muted">Linda Smith, VP of Administration, GRM (linda.smith@grmcp.com)</div></div>
+      <div class="card-row"><span class="lab">Sources found</span><div class="val muted">HubSpot email on deal record (2–8 May)</div></div>
+    </div><div class="card">
+      <div class="card-head">
+        <span class="card-title">Nucor Structural AI - Phase 2</span>
+        <span class="chip" style="color:#92400e;background:#fef3c7">🟡 Medium confidence</span>
+      </div>
+      <div class="card-row"><span class="lab">Suggested next step</span><div class="val">Take Brian Hills&#x27; 17 Jun introduction to John Henson (Nucor&#x27;s internal AI lead) and book a discovery to scope Phase 2 — connection-design / full-building (IFC + ConnectionAI) — and confirm deal value (TCV currently blank). Brian offered the intro directly and flagged the structural-engineering grounding as a strong fit.</div></div>
+      <div class="card-row"><span class="lab">Evidence</span><div class="val muted">Logged email on the deal record: Brian Hills (Nucor), 17 Jun — &quot;I would like to get you in contact with John Henson. He is on the AI side within Nucor. See if we can get some traction there.&quot; Aligns with Slack #client-nucor 16 May (IFC/ConnectionAI opportunity). TCV still unconfirmed.</div></div>
+      <div class="card-row"><span class="lab">Contact</span><div class="val muted">John Henson (Nucor, AI side) via Brian Hills</div></div>
+      <div class="card-row"><span class="lab">Sources found</span><div class="val muted">HubSpot email on deal record (17 Jun), Slack #client-nucor 16 May</div></div>
+    </div>
+
+<h2>Cashflow — deals with line items</h2>
+<p class="sub">Sorted by close date. Billing-frequency gaps flagged (all are one-time Implementation/Pilot items — likely intentional).</p>
+<table>
+<thead><tr><th>Pri</th><th>Deal</th><th>Close</th><th>TCV</th><th>Line items</th><th>Billing freq</th></tr></thead>
+<tbody><tr>
+      <td><span class="chip" style="color:#9f1239;background:#ffe4e6;border-color:#fecdd3">P1</span></td>
+      <td class="name">ICC-ES Digitisation Solution</td>
+      <td>2026-06-12</td>
+      <td class="num">337,450 USD</td>
+      <td class="num">1</td>
+      <td style="color:#475569">ok</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#9f1239;background:#ffe4e6;border-color:#fecdd3">P1</span></td>
+      <td class="name">Spacial.io Pilot</td>
+      <td>2026-06-30</td>
+      <td class="num">25,000 USD</td>
+      <td class="num">1</td>
+      <td style="color:#e11d48;font-weight:600">⚠ not set</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#9f1239;background:#ffe4e6;border-color:#fecdd3">P1</span></td>
+      <td class="name">Nucor Enterprise API &amp; Licensing</td>
+      <td>2026-07-01</td>
+      <td class="num">200,000 USD</td>
+      <td class="num">1</td>
+      <td style="color:#475569">ok</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#075985;background:#e0f2fe;border-color:#bae6fd">P3</span></td>
+      <td class="name">Nucor Cold Formed Truss Pilot</td>
+      <td>2026-07-09</td>
+      <td class="num">49,970 USD</td>
+      <td class="num">1</td>
+      <td style="color:#e11d48;font-weight:600">⚠ not set</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#9f1239;background:#ffe4e6;border-color:#fecdd3">P1</span></td>
+      <td class="name">Scaffplan Partnership</td>
+      <td>2026-08-31</td>
+      <td class="num">120,000 AUD</td>
+      <td class="num">1</td>
+      <td style="color:#475569">ok</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#9f1239;background:#ffe4e6;border-color:#fecdd3">P1</span></td>
+      <td class="name">AISC Codes Integration — Pilot</td>
+      <td>2026-08-31</td>
+      <td class="num">96,000 USD</td>
+      <td class="num">1</td>
+      <td style="color:#475569">ok</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#92400e;background:#fef3c7;border-color:#fde68a">P2</span></td>
+      <td class="name">ICC Expansion - Maps + More Calcs</td>
+      <td>2026-08-31</td>
+      <td class="num">50,000 USD</td>
+      <td class="num">1</td>
+      <td style="color:#475569">ok</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#92400e;background:#fef3c7;border-color:#fde68a">P2</span></td>
+      <td class="name">Basalt INTL - Calculators &amp; Webinars</td>
+      <td>2026-09-30</td>
+      <td class="num">50,000 USD</td>
+      <td class="num">1</td>
+      <td style="color:#475569">ok</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#92400e;background:#fef3c7;border-color:#fde68a">P2</span></td>
+      <td class="name">Spacial Go Live</td>
+      <td>2026-10-31</td>
+      <td class="num">249,996 USD</td>
+      <td class="num">1</td>
+      <td style="color:#475569">ok</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#92400e;background:#fef3c7;border-color:#fde68a">P2</span></td>
+      <td class="name">Fortress BP - LSF Decks</td>
+      <td>2026-12-01</td>
+      <td class="num">34,000 USD</td>
+      <td class="num">2</td>
+      <td style="color:#e11d48;font-weight:600">⚠ not set</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#9f1239;background:#ffe4e6;border-color:#fecdd3">P1</span></td>
+      <td class="name">ASTM Phase 2 - 100 Calcs</td>
+      <td>2026-12-31</td>
+      <td class="num">888,818 USD</td>
+      <td class="num">3</td>
+      <td style="color:#e11d48;font-weight:600">⚠ not set</td>
+    </tr><tr>
+      <td><span class="chip" style="color:#9f1239;background:#ffe4e6;border-color:#fecdd3">P1</span></td>
+      <td class="name">SCIA + SDS2 / Allplan Integration</td>
+      <td>⚠ none</td>
+      <td class="num">50,000 USD</td>
+      <td class="num">1</td>
+      <td style="color:#e11d48;font-weight:600">⚠ not set</td>
+    </tr></tbody>
+</table>
+
+<h2>Write-back queue (read-only view)</h2>
+<p class="sub">Next-step suggestions for the 6 no-next-step deals. Approve in the live Claude artifact to write back to HubSpot.</p>
+<table>
+<thead><tr><th>Deal</th><th>Confidence</th><th>Disposition</th></tr></thead>
+<tbody><tr>
+      <td class="name">Nucor Enterprise API &amp; Licensing</td>
+      <td><span class="chip" style="color:#065f46;background:#d1fae5">🟢 High</span></td>
+      <td>Auto-queued (approve in Claude)</td>
+    </tr><tr>
+      <td class="name">SCIA + SDS2 / Allplan Integration</td>
+      <td><span class="chip" style="color:#065f46;background:#d1fae5">🟢 High</span></td>
+      <td>Auto-queued (approve in Claude)</td>
+    </tr><tr>
+      <td class="name">AISC Calculator Creation</td>
+      <td><span class="chip" style="color:#92400e;background:#fef3c7">🟡 Medium</span></td>
+      <td>Needs manual approval</td>
+    </tr><tr>
+      <td class="name">Nucor Year 2 API Expansion</td>
+      <td><span class="chip" style="color:#92400e;background:#fef3c7">🟡 Medium</span></td>
+      <td>Needs manual approval</td>
+    </tr><tr>
+      <td class="name">GRM Custom Products - Specification Embed</td>
+      <td><span class="chip" style="color:#92400e;background:#fef3c7">🟡 Medium</span></td>
+      <td>Needs manual approval</td>
+    </tr><tr>
+      <td class="name">Nucor Structural AI - Phase 2</td>
+      <td><span class="chip" style="color:#92400e;background:#fef3c7">🟡 Medium</span></td>
+      <td>Needs manual approval</td>
+    </tr></tbody>
+</table>
+
+<footer>
+Generated by the Pipeline Intel Artifact · 18 Jun 2026 — 10:18 AEST<br>
+Gmail connector not connected this run, but emails logged on the deal records were used for enrichment (Fellow + Slack + Notion + on-record HubSpot emails). Line items and billing frequency are never auto-written. Days-dark and currency caveats apply as noted above.
+</footer>
+</div></body></html>
